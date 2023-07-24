@@ -10,8 +10,8 @@ class UrlFetcher
 public:
     UrlFetcher(const string &url, const string &fileName);
     bool download(string url,string fileName);
-    void setUrl(std::string url_);
-    void setFileName(std::string fileName_);
+    void setUrl(String url_);
+    void setFileName(String fileName_);
 
 private:
     string url_;

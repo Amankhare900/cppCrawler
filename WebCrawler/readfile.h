@@ -2,10 +2,10 @@
 #define READFILE_H
 
 #include <string>
-
+#include "dataStructure/cusomeString/cstring.h"
 class ReadFile {
 public:
-    std::string readFromFile(const std::string& filename);
+    String readFromFile(const String& filename);
     // void writeToFile(const std::string& filename, const std::string& data);
 };
 

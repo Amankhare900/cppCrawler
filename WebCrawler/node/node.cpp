@@ -2,10 +2,10 @@
 
 #include "node.h"
 
-Node::Node(const std::string& urlname, int depth)
+Node::Node(const String& urlname, int depth)
     : urlname(urlname), depth(depth) {}
 
-std::string Node::getUrlname() const {
+String Node::getUrlname() const {
     return urlname;
 }
 

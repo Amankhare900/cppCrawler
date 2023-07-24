@@ -1,23 +1,23 @@
 #ifndef URLPARSER_H
 #define URLPARSER_H
 
-#include <string>
+#include "dataStructure/cusomeString/cstring.h"
 #include <vector>
 
 class UrlParser {
 public:
     // virtual ~UrlParser() {}
-    virtual std::vector<std::string> extractUrls(const std::string& html) = 0;
+    virtual std::vector<String> extractUrls(const String& html) = 0;
 };
 
 class SimpleUrlParser : public UrlParser {
 public:
-    std::vector<std::string> extractUrls(const std::string& html) override;
-    std::string makeAbsoluteUrl(const std::string &url);
-    void setBaseurl(const std::string &baseurl);
+    std::vector<String> extractUrls(const String& html) override;
+    String makeAbsoluteUrl(const String &url);
+    void setBaseurl(const String &baseurl);
 
 private:
-    std::string baseUrl_;
+    String baseUrl_;
 };
 
 #endif // URLPARSER_H

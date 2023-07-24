@@ -53,7 +53,7 @@
 #ifndef WEBCRAWLER_H
 #define WEBCRAWLER_H
 
-#include <string>
+#include "dataStructure/cusomeString/cstring.h"
 #include <queue>
 #include <map>
 #include <vector>
@@ -68,8 +68,8 @@ class WebCrawler {
 public:
     WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser);
 
-    void startCrawling(const std::string& startUrl);
-    void crawlUrl(const std::string& url, int depth,int count);
+    void startCrawling(const String& startUrl);
+    void crawlUrl(const String& url, int depth,int count);
     // void writeHtmlToFile(const std::string& filename, const std::string& html);
     // std::string readHtmlFromFile(const std::string& filename);
 
@@ -86,10 +86,10 @@ private:
     SimpleUrlParser* urlParser;
     ReadFile readFile;
 
-    std::set<std::string> visitedUrl;
+    std::set<String> visitedUrl;
     std::queue<Node> urlQueue;
     std::queue<Node> waitingQueue;
-    std::map<std::string, DomainData> dataStorage;
+    std::map<String, DomainData> dataStorage;
 //     void addToWaitingQueue(const std::string& url);
 //     void moveToUrlQueueFromWaitingQueue(const std::string& url);
 //     bool isDomainLimitReached(const std::string& domain);

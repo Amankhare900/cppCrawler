@@ -3,20 +3,20 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <string>
+#include "../dataStructure/cusomeString/cstring.h"
 
 class Node {
 public:
-    Node(const std::string& urlname, int depth);
+    Node(const String& urlname, int depth);
 
     // Getters
-    std::string getUrlname() const;
+    String getUrlname() const;
     int getDepth() const;
 
     // Setters (if needed)
 
 private:
-    std::string urlname;
+    String urlname;
     int depth;
 };
 

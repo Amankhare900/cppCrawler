@@ -11,6 +11,7 @@ using namespace std;
 #include "WebCrawler/urlparser.cpp"
 #include "WebCrawler/node/node.cpp"
 #include "WebCrawler/webcrawler.cpp"
+#include "WebCrawler/dataStructure/cusomeString/cstring.cpp"
 int main()
 {
     int maxDepth = 5;
