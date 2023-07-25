@@ -43,11 +43,10 @@ String SimpleUrlParser::makeAbsoluteUrl(const String &url)
     // Check if the URL is relative
     if (url.size()==0 || url.find("://") != String::npos)
     {
-        return url; // Already an absolute URL or empty
+        return url;
     }
 
     // Resolve relative URL using base URL
-    std::cout<<"make the base url";
     return baseUrl_ + url;
 }
 

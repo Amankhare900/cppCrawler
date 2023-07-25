@@ -17,7 +17,7 @@ private:
     size_t size;
 
 public:
-    Queue() : frontNode(nullptr), rearNode(nullptr), size(0) {}
+    Queue();
     ~Queue();
 
     void push(const T& value);
@@ -26,8 +26,5 @@ public:
     bool empty() const;
     size_t getSize() const;
 };
-
-// Include the implementation of the templated class
-#include "queue.cpp"
 
 #endif // QUEUE_H

@@ -9,6 +9,8 @@ String Node::getUrlname() const {
     return urlname;
 }
 
+Node::Node():urlname(""),depth(0){}
+
 int Node::getDepth() const {
     return depth;
 }

@@ -31,7 +31,6 @@ void WebCrawler::startCrawling(const String& startUrl) {
 }
 void WebCrawler::crawlUrl(const String& url, int depth, int count) {
     // Build the output directory path
-    std::cout<<"hello";
     std::stringstream ss;
     ss << "./output/" << depth;
     String outputDir = ss.str().c_str();

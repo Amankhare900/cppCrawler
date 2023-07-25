@@ -28,6 +28,9 @@ public:
     // Move assignment operator
     String& operator=(String&& other) noexcept;
     String& operator+=(const String& other);
+    bool operator==(const String& other) const {
+        return std::strcmp(data, other.data) == 0;
+    }
     const char* c_str() const;
     size_t find(const String& substring) const;
     

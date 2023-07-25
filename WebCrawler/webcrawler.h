@@ -54,11 +54,13 @@
 #define WEBCRAWLER_H
 
 #include "dataStructure/customString/cstring.h"
-#include <queue>
+#include "dataStructure/customQueue/queue.h"
+#include "dataStructure/customSet/cSet.h"
+// #include <queue>
 #include <map>
 #include <vector>
 #include <ctime>
-#include <set>
+
 #include "urlfetcher.h"
 #include "urlparser.h"
 #include "readfile.h"
@@ -86,9 +88,9 @@ private:
     SimpleUrlParser* urlParser;
     ReadFile readFile;
 
-    std::set<String> visitedUrl;
-    std::queue<Node> urlQueue;
-    std::queue<Node> waitingQueue;
+    Set<String> visitedUrl;
+    Queue<Node> urlQueue;
+    Queue<Node> waitingQueue;
     std::map<String, DomainData> dataStorage;
 //     void addToWaitingQueue(const std::string& url);
 //     void moveToUrlQueueFromWaitingQueue(const std::string& url);

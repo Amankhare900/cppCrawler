@@ -7,6 +7,7 @@
 
 class Node {
 public:
+    Node();
     Node(const String& urlname, int depth);
 
     // Getters

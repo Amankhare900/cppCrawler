@@ -16,7 +16,7 @@ DynamicArray<T>::~DynamicArray() {
     delete[] arr;
 }
 
-// Push element to the back of the dynamic array
+// Push element to the back of the dynamic array 
 template <typename T>
 void DynamicArray<T>::pushBack(const T& value) {
     if (size >= capacity) {
@@ -46,7 +46,7 @@ void DynamicArray<T>::popBack() {
 template <typename T>
 T& DynamicArray<T>::operator[](size_t index) {
     if (index >= size) {
-        throw std::out_of_range("Index out of range.");
+        throw std::out_of_range(to_string(index));
     }
     return arr[index];
 }
@@ -55,7 +55,8 @@ T& DynamicArray<T>::operator[](size_t index) {
 template <typename T>
 const T& DynamicArray<T>::operator[](size_t index) const {
     if (index >= size) {
-        throw std::out_of_range("Index out of range.");
+        // std::cout<<index<<" "<<size<<endl;
+        throw std::out_of_range(to_string(index));
     }
     return arr[index];
 }
