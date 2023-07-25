@@ -16,8 +16,8 @@ int main()
 {
     int maxDepth = 5;
     int maxDomainLimit = 10;
-    UrlFetcher urlFetcher("http://codequotient.com/", "./output/0/0"); // Instantiate SimpleUrlFetcher
-    SimpleUrlParser urlParser;   // Instantiate SimpleUrlParser
+    UrlFetcher urlFetcher("http://codequotient.com/", "./output/0/0");
+    SimpleUrlParser urlParser;   
 
     WebCrawler crawler(&urlFetcher, &urlParser);
     

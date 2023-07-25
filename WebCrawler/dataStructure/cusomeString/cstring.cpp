@@ -8,27 +8,33 @@ String::String() : data(nullptr) {}
 String::String(const char* cString) {
     if (cString) {
         // Allocate memory for the string and copy the C-string
-        data = new char[strlen(cString) + 1];
+        length = strlen(cString);
+        data = new char[length + 1];
         strcpy(data, cString);
     } else {
         // Handle nullptr case
         data = new char[1];
         *data = '\0';
+        length = 0; // Set the length to 0 for an empty string
     }
 }
+
 
 // Copy constructor
 String::String(const String& other) {
     // Allocate memory and copy the content from 'other'
-    data = new char[strlen(other.data) + 1];
+    length = strlen(other.data);
+    data = new char[length + 1];
     strcpy(data, other.data);
 }
 
 
 // write the length function code
 size_t String::size() const {
-    return strlen(data);
+    return length;
 }
+
+
 
 size_t String::find(const String& substring) const {
     const char* result = std::strstr(data, substring.data);
@@ -38,48 +44,116 @@ size_t String::find(const String& substring) const {
         return static_cast<size_t>(-1); // Return a value indicating substring not found
     }
 }
+// Destructor
+String::~String() {
+    delete[] data;
+}
+
 String::String(const char* cString, size_t len) {
     length = len;
     data = new char[length + 1];
     std::memcpy(data, cString, length);
     data[length] = '\0';
 }
-// Destructor
-String::~String() {
-    delete[] data;
-}
+
 
 // Assignment operator
 String& String::operator=(const String& other) {
-    if (this == &other) {
-        return *this; // Handle self-assignment
-    }
+    if (this != &other) {
+        delete[] data; // Deallocate existing data
 
-    // Deallocate existing memory and copy the content from 'other'
-    delete[] data;
-    data = new char[strlen(other.data) + 1];
-    strcpy(data, other.data);
+        length = other.length;
+        data = new char[length + 1];
+        strcpy(data, other.data);
+    }
+    return *this;
+}
+
+
+String::String(String&& other) noexcept : data(nullptr), length(0) {
+    // Move constructor, take ownership of the data from 'other'
+    data = other.data;
+    length = other.length;
+
+    // Reset 'other' to a valid state to avoid double deletion of data
+    other.data = nullptr;
+    other.length = 0;
+}
+
+String& String::operator=(String&& other) noexcept {
+    // Move assignment operator, take ownership of the data from 'other'
+    if (this != &other) {
+        delete[] data; // Deallocate existing data
+
+        data = other.data;
+        length = other.length;
+
+        // Reset 'other' to a valid state to avoid double deletion of data
+        other.data = nullptr;
+        other.length = 0;
+    }
+    return *this;
+}
+
+
+
+String& String::operator+=(const String& other) {
+    size_t newLength = length + other.length;
+
+    // std::cout<<newLength<<endl;
+    // std::cout<<length<<endl;
+    // std::cout<<other.length<<endl;
+    char* newData = new (std::nothrow) char[newLength + 1]; // Use 'nothrow' to avoid exceptions on allocation failure
+    // std::cout<<"hello";
+    if (newData) {
+        std::memcpy(newData, data, length);             // Copy the first part of the data
+        std::memcpy(newData + length, other.data, other.length); // Copy the second part of the data
+
+        newData[newLength] = '\0'; // Null-terminate the new string
+
+        delete[] data; // Deallocate the old data
+        data = newData;
+        length = newLength;
+    } else {
+        // Handle memory allocation failure gracefully
+        std::cerr << "Memory allocation failed in operator+=. Concatenation aborted." << std::endl;
+    }
 
     return *this;
 }
 
+
+
+String::String(char ch) {
+    length = 1;
+    data = new char[length + 1];
+    data[0] = ch;
+    data[length] = '\0';
+}
+bool String::operator<(const String& rhs) const {
+    return strcmp(data, rhs.data) < 0;
+}
 // Concatenation operator
 String String::operator+(const String& other) const {
     // Calculate the size of the concatenated string
-    size_t newSize = strlen(data) + strlen(other.data) + 1;
+    size_t newSize = strlen(data) + strlen(other.data);
     // Allocate memory for the concatenated string
-    char* newData = new char[newSize];
+    char* newData = new char[newSize + 1]; // +1 for the null-terminator
 
     // Copy the content of both strings to the new memory
     strcpy(newData, data);
     strcat(newData, other.data);
 
-    // Create a new String object and return it
+    // Create a new String object and update its length
     String result(newData);
+    result.length = newSize;
+
     delete[] newData; // Cleanup the allocated memory
 
     return result;
 }
+
+
 
 // Accessor function to get the C-style string representation
 const char* String::c_str() const {

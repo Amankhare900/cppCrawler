@@ -1,3 +1,4 @@
-output/
-#main.exe
-*main.exe
+*.exe
+*.html
+output
+main.exe

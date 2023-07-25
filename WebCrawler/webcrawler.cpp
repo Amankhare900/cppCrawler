@@ -164,7 +164,7 @@
 #include <filesystem>
 
 WebCrawler::WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser)
-    : maxDepth(1), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser) {}
+    : maxDepth(2), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser) {}
 
 void WebCrawler::startCrawling(const String& startUrl) {
     urlQueue.push(Node(startUrl, 0));
@@ -189,6 +189,7 @@ void WebCrawler::startCrawling(const String& startUrl) {
 }
 void WebCrawler::crawlUrl(const String& url, int depth, int count) {
     // Build the output directory path
+    std::cout<<"hello";
     std::stringstream ss;
     ss << "./output/" << depth;
     String outputDir = ss.str().c_str();
@@ -196,6 +197,7 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
     // Check if the output directory exists, and create it if it doesn't
     if (!std::filesystem::exists(outputDir.c_str())) {
         std::filesystem::create_directory(outputDir.c_str());
+
     }
 
     // Construct the output file path
@@ -209,9 +211,10 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
         std::vector<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
         for (const String& extractedUrl : extractedUrls) {
             urlQueue.push(Node(extractedUrl, depth + 1));
+            // std::cout<<extractedUrl.c_str()<<endl;
         }
     } else {
-        std::cerr << "HTTP request execution failed." << std::endl;
+        std::cerr << "HTTP request execution failed. " <<url.c_str()<< std::endl;
     }
 }
 
