@@ -9,7 +9,7 @@ class UrlFetcher
 {
 public:
     UrlFetcher(const String &url, const String &fileName);
-    bool download(string url,string fileName);
+    bool download(String url,String fileName);
     void setUrl(String url_);
     void setFileName(String fileName_);
 
