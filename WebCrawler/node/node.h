@@ -2,8 +2,8 @@
 
 #ifndef NODE_H
 #define NODE_H
+#include "../dataStructure/customString/cstring.h"
 
-#include "../dataStructure/cusomeString/cstring.h"
 
 class Node {
 public:

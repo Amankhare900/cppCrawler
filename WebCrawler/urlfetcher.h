@@ -1,7 +1,7 @@
 #ifndef URLFETCHER_H
 #define URLFETCHER_H
 
-#include "dataStructure/cusomeString/cstring.h"
+#include "dataStructure/customString/cstring.h"
 
 using namespace std; // Using namespace std in the header for simplicity (not recommended in larger projects)
 

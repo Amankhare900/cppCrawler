@@ -1,4 +1,65 @@
 
+#include "webcrawler.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
+
+WebCrawler::WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser)
+    : maxDepth(1), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser) {}
+
+void WebCrawler::startCrawling(const String& startUrl) {
+    urlQueue.push(Node(startUrl, 0));
+    int depth = 0;
+    int count = -1;
+    while (!urlQueue.empty() && urlQueue.front().getDepth() <= maxDepth) {
+        Node currentNode = urlQueue.front();
+        urlQueue.pop();
+
+        if (currentNode.getUrlname().size()!=0 && visitedUrl.find(currentNode.getUrlname()) == visitedUrl.end()) {
+            visitedUrl.insert(currentNode.getUrlname());
+            if (depth == currentNode.getDepth()) {
+                count++;
+                cout<<"fetching data from "<< currentNode.getUrlname().c_str() << "for depth "<<currentNode.getDepth()<<endl;
+            } else {
+                depth = currentNode.getDepth();
+                count = 0;
+            }
+            crawlUrl(currentNode.getUrlname(), currentNode.getDepth(), count);
+        }
+    }
+}
+void WebCrawler::crawlUrl(const String& url, int depth, int count) {
+    // Build the output directory path
+    std::cout<<"hello";
+    std::stringstream ss;
+    ss << "./output/" << depth;
+    String outputDir = ss.str().c_str();
+
+    // Check if the output directory exists, and create it if it doesn't
+    if (!std::filesystem::exists(outputDir.c_str())) {
+        std::filesystem::create_directory(outputDir.c_str());
+
+    }
+
+    // Construct the output file path
+    ss << "/" << count << ".html";
+    outputDir = ss.str().c_str();
+    // Now you can proceed with downloading and processing the HTML data
+    
+    if (urlFetcher->download(url.c_str(), outputDir.c_str())) {
+        String htmlData = readFile.readFromFile(outputDir.c_str());
+        urlParser->setBaseurl(url.c_str());
+        std::vector<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
+        for (const String& extractedUrl : extractedUrls) {
+            urlQueue.push(Node(extractedUrl, depth + 1));
+            // std::cout<<extractedUrl.c_str()<<endl;
+        }
+    } else {
+        std::cerr << "HTTP request execution failed. " <<url.c_str()<< std::endl;
+    }
+}
+
 // #include "webcrawler.h"
 // #include <iostream>
 // #include <fstream>
@@ -156,64 +217,3 @@
 // //     }
 // // }
 
-
-#include "webcrawler.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
-
-WebCrawler::WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser)
-    : maxDepth(2), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser) {}
-
-void WebCrawler::startCrawling(const String& startUrl) {
-    urlQueue.push(Node(startUrl, 0));
-    int depth = 0;
-    int count = -1;
-    while (!urlQueue.empty() && urlQueue.front().getDepth() <= maxDepth) {
-        Node currentNode = urlQueue.front();
-        urlQueue.pop();
-
-        if (currentNode.getUrlname().size()!=0 && visitedUrl.find(currentNode.getUrlname()) == visitedUrl.end()) {
-            visitedUrl.insert(currentNode.getUrlname());
-            if (depth == currentNode.getDepth()) {
-                count++;
-                cout<<"fetching data from "<< currentNode.getUrlname().c_str() << "for depth "<<currentNode.getDepth()<<endl;
-            } else {
-                depth = currentNode.getDepth();
-                count = 0;
-            }
-            crawlUrl(currentNode.getUrlname(), currentNode.getDepth(), count);
-        }
-    }
-}
-void WebCrawler::crawlUrl(const String& url, int depth, int count) {
-    // Build the output directory path
-    std::cout<<"hello";
-    std::stringstream ss;
-    ss << "./output/" << depth;
-    String outputDir = ss.str().c_str();
-
-    // Check if the output directory exists, and create it if it doesn't
-    if (!std::filesystem::exists(outputDir.c_str())) {
-        std::filesystem::create_directory(outputDir.c_str());
-
-    }
-
-    // Construct the output file path
-    ss << "/" << count << ".html";
-    outputDir = ss.str().c_str();
-    // Now you can proceed with downloading and processing the HTML data
-    
-    if (urlFetcher->download(url.c_str(), outputDir.c_str())) {
-        String htmlData = readFile.readFromFile(outputDir.c_str());
-        urlParser->setBaseurl(url.c_str());
-        std::vector<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
-        for (const String& extractedUrl : extractedUrls) {
-            urlQueue.push(Node(extractedUrl, depth + 1));
-            // std::cout<<extractedUrl.c_str()<<endl;
-        }
-    } else {
-        std::cerr << "HTTP request execution failed. " <<url.c_str()<< std::endl;
-    }
-}

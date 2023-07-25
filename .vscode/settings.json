@@ -57,6 +57,10 @@
         "random": "cpp",
         "ratio": "cpp",
         "iomanip": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "queue": "cpp",
+        "cstring.h": "c",
+        "node.h": "c",
+        "readfile.h": "c"
     }
 }

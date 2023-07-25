@@ -1,7 +1,8 @@
 #ifndef URLPARSER_H
 #define URLPARSER_H
 
-#include "dataStructure/cusomeString/cstring.h"
+#include "dataStructure/customString/cstring.h"
+
 #include <vector>
 
 class UrlParser {

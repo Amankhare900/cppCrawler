@@ -53,7 +53,7 @@
 #ifndef WEBCRAWLER_H
 #define WEBCRAWLER_H
 
-#include "dataStructure/cusomeString/cstring.h"
+#include "dataStructure/customString/cstring.h"
 #include <queue>
 #include <map>
 #include <vector>

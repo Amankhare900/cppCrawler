@@ -2,7 +2,8 @@
 #define READFILE_H
 
 #include <string>
-#include "dataStructure/cusomeString/cstring.h"
+#include "dataStructure/customString/cstring.h"
+
 class ReadFile {
 public:
     String readFromFile(const String& filename);

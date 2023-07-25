@@ -1,8 +1,8 @@
 #ifndef RATELIMITER_H
 #define RATELIMITER_H
+#include "dataStructure/customString/cstring.h"
 
-#include "dataStructure/cusomestring/cstring.h"
-#include "dataStructure/cusomemap/cmap.h"
+#include "dataStructure/custommap/cmap.h"
 #include "domaindate.h"
 
 class RateLimiter {
