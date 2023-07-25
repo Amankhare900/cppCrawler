@@ -217,27 +217,3 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
         std::cerr << "HTTP request execution failed. " <<url.c_str()<< std::endl;
     }
 }
-
-
-
-// void WebCrawler::crawlUrl(const std::string& url, int depth, int count) {
-//     // check wether the output/depth is exist if is not exist the then make one
-
-//     std::stringstream ss;
-//     ss << "output/" << depth << "/" << count;
-//     std::string outputDir = ss.str();
-//     // make the depth directory if it dos'nt exist
-//     std::string command = "mkdir -p " + outputDir;
-//     system(command.c_str());
-
-//     if (urlFetcher->download(url, outputDir)) {
-//         std::string htmlData = readFile.readFromFile(outputDir);
-//         std::vector<std::string> extractedUrls = urlParser->extractUrls(htmlData);
-//         for (const std::string& extractedUrl : extractedUrls) {
-//             urlQueue.push(Node(extractedUrl, depth + 1));
-//         }
-//     } else {
-//         std::cerr << "HTTP request execution failed." << std::endl;
-//     }
-// }
-
