@@ -9,16 +9,17 @@ private:
     struct Node {
         T data;  
         Node* next;
-
-        Node(const T& value) : data(value), next(nullptr) {}
+        size_t hashValue;
+        Node(const T& value, size_t hash) : data(value), hashValue(hash), next(nullptr) {}
     };
 
     DynamicArray<Node*>* table;
     size_t tableSize;
+    size_t numElements;
 
     size_t hash(const T& value) const;
     void destroyList(Node* head);
-    Node* createNode(const T& value);
+    Node* createNode(const T& value, size_t hash);
 
 public:
     Set();

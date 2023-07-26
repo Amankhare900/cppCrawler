@@ -15,8 +15,9 @@ void WebCrawler::startCrawling(const String& startUrl) {
     while (!urlQueue.empty() && urlQueue.front().getDepth() <= maxDepth) {
         Node currentNode = urlQueue.front();
         urlQueue.pop();
-
+        // cout<<"checking "<<endl;
         if (currentNode.getUrlname().size()!=0 && visitedUrl.find(currentNode.getUrlname()) == visitedUrl.end()) {
+            // cout<<"visitedUrl not contain "<<currentNode.getUrlname().c_str();
             visitedUrl.insert(currentNode.getUrlname());
             if (depth == currentNode.getDepth()) {
                 count++;
@@ -47,12 +48,14 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
     // Now you can proceed with downloading and processing the HTML data
     
     if (urlFetcher->download(url.c_str(), outputDir.c_str())) {
+        if(depth<maxDepth){
         String htmlData = readFile.readFromFile(outputDir.c_str());
         urlParser->setBaseurl(url.c_str());
         std::vector<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
         for (const String& extractedUrl : extractedUrls) {
             urlQueue.push(Node(extractedUrl, depth + 1));
             // std::cout<<extractedUrl.c_str()<<endl;
+        }
         }
     } else {
         std::cerr << "HTTP request execution failed. " <<url.c_str()<< std::endl;

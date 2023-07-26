@@ -12,7 +12,7 @@ private:
 
 public:
     DynamicArray();
-    DynamicArray(size_t initialCapacity);
+    DynamicArray(size_t initialCapacity, const T& defaultValue);
     ~DynamicArray();
 
     void pushBack(const T& value);
