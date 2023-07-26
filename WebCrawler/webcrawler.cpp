@@ -51,9 +51,13 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
         if(depth<maxDepth){
         String htmlData = readFile.readFromFile(outputDir.c_str());
         urlParser->setBaseurl(url.c_str());
-        std::vector<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
-        for (const String& extractedUrl : extractedUrls) {
-            urlQueue.push(Node(extractedUrl, depth + 1));
+        DynamicArray<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
+        // for (const String& extractedUrl : extractedUrls) {
+        //     urlQueue.push(Node(extractedUrl, depth + 1));
+        //     // std::cout<<extractedUrl.c_str()<<endl;
+        // }
+        for(int i = 0;i<extractedUrls.getSize();i++){
+            urlQueue.push(Node(extractedUrls[i], depth + 1));
             // std::cout<<extractedUrl.c_str()<<endl;
         }
         }

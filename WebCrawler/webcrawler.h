@@ -56,9 +56,10 @@
 #include "dataStructure/customString/cstring.h"
 #include "dataStructure/customQueue/queue.h"
 #include "dataStructure/customSet/cSet.h"
-// #include <queue>
+#include "dataStructure/dynamicarray/dynamicarray.h"
+
 #include <map>
-#include <vector>
+// #include <vector>
 #include <ctime>
 
 #include "urlfetcher.h"
@@ -79,7 +80,7 @@ private:
     struct DomainData {
         int maxUrlFetchedPerMinute;
         int totalMaxUrlFetched;
-        std::vector<time_t> urlTimestamps;
+        DynamicArray<time_t> urlTimestamps;
     };
 
     int maxDepth;

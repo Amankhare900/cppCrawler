@@ -1,10 +1,10 @@
 #include "urlparser.h"
 #include <regex>
 
-std::vector<String> SimpleUrlParser::extractUrls(const String& html) {
+DynamicArray<String> SimpleUrlParser::extractUrls(const String& html) {
     // This is a simple implementation for testing purposes.
     // Replace this with your actual implementation to extract URLs from the HTML content.
-    std::vector<String> extractedUrls;
+    DynamicArray<String> extractedUrls;
     const char* urlRegex = "<a\\s+(?:[^>]*?\\s+)?href=\"([^\"]*)\"";
 
     // Use the C-style regex functions
@@ -19,7 +19,7 @@ std::vector<String> SimpleUrlParser::extractUrls(const String& html) {
         String url(match[1].first, match[1].second - match[1].first);
         String absoluteUrl = makeAbsoluteUrl(url);
         if (absoluteUrl.size()!=0){
-            extractedUrls.push_back(absoluteUrl);
+            extractedUrls.pushBack(absoluteUrl);
         }
         it = match[0].second;
     }
