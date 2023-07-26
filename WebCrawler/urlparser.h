@@ -9,7 +9,7 @@
 class UrlParser {
 public:
     // virtual ~UrlParser() {}
-    virtual DynamicArray<String> extractUrls(const String& html) = 0;
+    virtual DynamicArray<String> extractUrls(const String& html)=0;
 };
 
 class SimpleUrlParser : public UrlParser {
@@ -18,8 +18,10 @@ public:
     String makeAbsoluteUrl(const String &url);
     void setBaseurl(const String &baseurl);
 
+
 private:
     String baseUrl_;
+    
 };
 
 #endif // URLPARSER_H

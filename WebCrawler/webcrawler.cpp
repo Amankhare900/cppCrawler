@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <chrono>   // Include for std::chrono::seconds
+#include <thread>
 
 WebCrawler::WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser)
     : maxDepth(1), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser) {}
@@ -12,24 +14,38 @@ void WebCrawler::startCrawling(const String& startUrl) {
     urlQueue.push(Node(startUrl, 0));
     int depth = 0;
     int count = -1;
+    time_t currentTime = time(nullptr);
+    time_t spendTime = currentTime; // Initialize spendTime
+
     while (!urlQueue.empty() && urlQueue.front().getDepth() <= maxDepth) {
         Node currentNode = urlQueue.front();
         urlQueue.pop();
-        // cout<<"checking "<<endl;
-        if (currentNode.getUrlname().size()!=0 && visitedUrl.find(currentNode.getUrlname()) == visitedUrl.end()) {
-            // cout<<"visitedUrl not contain "<<currentNode.getUrlname().c_str();
+        
+        spendTime = time(nullptr);
+        if (currentNode.getUrlname().size() != 0 && visitedUrl.find(currentNode.getUrlname()) == visitedUrl.end()) {
             visitedUrl.insert(currentNode.getUrlname());
             if (depth == currentNode.getDepth()) {
                 count++;
-                cout<<"fetching data from "<< currentNode.getUrlname().c_str() << "for depth "<<currentNode.getDepth()<<endl;
+                cout << "fetching data from " << currentNode.getUrlname().c_str() << " for depth " << currentNode.getDepth() << endl;
             } else {
                 depth = currentNode.getDepth();
                 count = 0;
             }
+            
+            currentTime = time(nullptr); // Update currentTime
+            if (currentTime - spendTime < 6) {
+                std::chrono::seconds delay(6 - (currentTime - spendTime));
+                std::this_thread::sleep_for(delay);
+                currentTime = time(nullptr);
+            }
+
+            // Update spendTime after the delay
+            spendTime = time(nullptr);
             crawlUrl(currentNode.getUrlname(), currentNode.getDepth(), count);
         }
     }
 }
+
 void WebCrawler::crawlUrl(const String& url, int depth, int count) {
     // Build the output directory path
     std::stringstream ss;

@@ -82,6 +82,8 @@ private:
         int totalMaxUrlFetched;
         DynamicArray<time_t> urlTimestamps;
     };
+    // time_t currentTime;
+    // time_t spendTime;
 
     int maxDepth;
     int maxDomainLimit;
