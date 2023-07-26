@@ -1,4 +1,5 @@
 *.exe
 *.html
+*.txt
 output
 main.exe
