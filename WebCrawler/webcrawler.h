@@ -69,10 +69,10 @@
 
 class WebCrawler {
 public:
-    WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser);
 
-    void startCrawling(const String& startUrl);
-    void crawlUrl(const String& url, int depth,int count);
+    static WebCrawler& getInstance(UrlFetcher* fetcher, SimpleUrlParser* parser);
+    void startCrawling(const String& startUrl, String s_id);
+    void crawlUrl(const String& url, int depth,int count, String s_id);
     // void writeHtmlToFile(const std::string& filename, const std::string& html);
     // std::string readHtmlFromFile(const std::string& filename);
 
@@ -82,8 +82,12 @@ private:
         int totalMaxUrlFetched;
         DynamicArray<time_t> urlTimestamps;
     };
+    
+    WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser);
     // time_t currentTime;
     // time_t spendTime;
+    WebCrawler(const WebCrawler& other) = delete;
+    WebCrawler& operator=(const WebCrawler& other) = delete;
 
     int maxDepth;
     int maxDomainLimit;
@@ -92,6 +96,7 @@ private:
     ReadFile readFile;
 
     Set<String> visitedUrl;
+    static WebCrawler* instance;
     Queue<Node> urlQueue;
     Queue<Node> waitingQueue;
     std::map<String, DomainData> dataStorage;
@@ -102,4 +107,5 @@ private:
 //     std::string getDomainFromUrl(const std::string& url);
 };
 
+WebCrawler* WebCrawler::instance = nullptr;
 #endif // WEBCRAWLER_H

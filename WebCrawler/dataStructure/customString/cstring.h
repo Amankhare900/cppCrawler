@@ -11,6 +11,7 @@ private:
 
 public:
     static const size_t npos = -1;
+    static String fromInt(int value);
     String();
     String(const char* cString);
     String(const char* cString, size_t len); // New constructor
@@ -22,6 +23,7 @@ public:
     String& operator=(const String& other);
     String(char ch);
     String operator+(const String& other) const;
+    String operator+(const char* other) const;
     // Move constructor
     String(String&& other) noexcept;
 

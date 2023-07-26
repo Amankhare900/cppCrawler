@@ -42,3 +42,12 @@ String ReadFile::readFromFile(const String& filename) {
 
     return data;
 }
+void ReadFile::writeToFile(const String& filename, const String& data){
+    std::ofstream file(filename.c_str());
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename.c_str() << std::endl;
+        return; // Return an empty String in case of failure
+    }
+    file << data.c_str();
+    file.close();
+}

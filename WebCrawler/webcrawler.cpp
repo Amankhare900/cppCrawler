@@ -8,9 +8,17 @@
 #include <thread>
 
 WebCrawler::WebCrawler(UrlFetcher* fetcher, SimpleUrlParser* parser)
-    : maxDepth(1), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser) {}
+    : maxDepth(1), maxDomainLimit(0), urlFetcher(fetcher), urlParser(parser){
+        
+    }
+WebCrawler& WebCrawler::getInstance(UrlFetcher* fetcher, SimpleUrlParser* parser) {
+    if (!instance) {
+        instance = new WebCrawler(fetcher, parser);
+    }
+    return *instance;
+}
 
-void WebCrawler::startCrawling(const String& startUrl) {
+void WebCrawler::startCrawling(const String& startUrl, String s_id) {
     urlQueue.push(Node(startUrl, 0));
     int depth = 0;
     int count = -1;
@@ -41,21 +49,20 @@ void WebCrawler::startCrawling(const String& startUrl) {
 
             // Update spendTime after the delay
             spendTime = time(nullptr);
-            crawlUrl(currentNode.getUrlname(), currentNode.getDepth(), count);
+            crawlUrl(currentNode.getUrlname(), currentNode.getDepth(), count,s_id);
         }
     }
 }
 
-void WebCrawler::crawlUrl(const String& url, int depth, int count) {
+void WebCrawler::crawlUrl(const String& url, int depth, int count, String s_id) {
     // Build the output directory path
     std::stringstream ss;
-    ss << "./output/" << depth;
+    ss << "./output/sessionNo"<<s_id.c_str()<<"/" << depth;
     String outputDir = ss.str().c_str();
 
     // Check if the output directory exists, and create it if it doesn't
     if (!std::filesystem::exists(outputDir.c_str())) {
         std::filesystem::create_directory(outputDir.c_str());
-
     }
 
     // Construct the output file path
@@ -68,10 +75,6 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
         String htmlData = readFile.readFromFile(outputDir.c_str());
         urlParser->setBaseurl(url.c_str());
         DynamicArray<String> extractedUrls = urlParser->extractUrls(htmlData.c_str());
-        // for (const String& extractedUrl : extractedUrls) {
-        //     urlQueue.push(Node(extractedUrl, depth + 1));
-        //     // std::cout<<extractedUrl.c_str()<<endl;
-        // }
         for(int i = 0;i<extractedUrls.getSize();i++){
             urlQueue.push(Node(extractedUrls[i], depth + 1));
             // std::cout<<extractedUrl.c_str()<<endl;
@@ -81,7 +84,6 @@ void WebCrawler::crawlUrl(const String& url, int depth, int count) {
         std::cerr << "HTTP request execution failed. " <<url.c_str()<< std::endl;
     }
 }
-
 // #include "webcrawler.h"
 // #include <iostream>
 // #include <fstream>

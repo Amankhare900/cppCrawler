@@ -34,7 +34,29 @@ size_t String::size() const {
     return length;
 }
 
+String String::operator+(const char* other) const {
+    // Get the length of the other char* (assuming it's null-terminated)
+    size_t len_other = strlen(other);
 
+    // Create a new String that can hold both the original String and the other char*
+    size_t new_length = length + len_other;
+    char* new_data = new char[new_length + 1]; // +1 for null-terminator
+
+    // Copy the characters from the original String to the new data
+    memcpy(new_data, data, length);
+    // Copy the characters from the other char* to the new data
+    memcpy(new_data + length, other, len_other);
+    // Add the null-terminator at the end
+    new_data[new_length] = '\0';
+
+    // Create a new String object with the concatenated data
+    String result(new_data);
+
+    // Clean up memory
+    delete[] new_data;
+
+    return result;
+}
 
 size_t String::find(const String& substring) const {
     const char* result = std::strstr(data, substring.data);
@@ -135,20 +157,26 @@ bool String::operator<(const String& rhs) const {
 }
 // Concatenation operator
 String String::operator+(const String& other) const {
-    // Calculate the size of the concatenated string
-    size_t newSize = strlen(data) + strlen(other.data);
-    // Allocate memory for the concatenated string
-    char* newData = new char[newSize + 1]; // +1 for the null-terminator
+    // Get the lengths of the two Strings
+    size_t len_this = length;
+    size_t len_other = other.length;
 
-    // Copy the content of both strings to the new memory
-    strcpy(newData, data);
-    strcat(newData, other.data);
+    // Create a new String that can hold both Strings
+    size_t new_length = len_this + len_other;
+    char* new_data = new char[new_length + 1]; // +1 for null-terminator
 
-    // Create a new String object and update its length
-    String result(newData);
-    result.length = newSize;
+    // Copy the characters from the first String to the new data
+    memcpy(new_data, data, len_this);
+    // Copy the characters from the second String to the new data
+    memcpy(new_data + len_this, other.data, len_other);
+    // Add the null-terminator at the end
+    new_data[new_length] = '\0';
 
-    delete[] newData; // Cleanup the allocated memory
+    // Create a new String object with the concatenated data
+    String result(new_data);
+
+    // Clean up memory
+    delete[] new_data;
 
     return result;
 }
@@ -161,3 +189,43 @@ const char* String::c_str() const {
 }
 
 const char* String::begin() const { return data; }
+
+String String::fromInt(int value) {
+    if (value == 0) {
+        return String("0");
+    }
+
+    bool isNegative = false;
+    if (value < 0) {
+        isNegative = true;
+        value = -value;
+    }
+
+        // Determine the number of digits in the integer value
+    int numDigits = 0;
+    int temp = value;
+    while (temp > 0) {
+        temp /= 10;
+        numDigits++;
+    }
+
+        // Allocate memory for the resulting string
+    int bufferSize = numDigits + (isNegative ? 1 : 0) + 1; // +1 for the null-terminator
+    char* buffer = new char[bufferSize];
+    int index = bufferSize - 1;
+    buffer[index] = '\0';
+// Convert each digit to a character and store it in the buffer
+    while (index > 0) {
+        buffer[--index] = '0' + (value % 10);
+        value /= 10;
+    }
+
+        // Add the negative sign if the number is negative
+    if (isNegative) {
+        buffer[--index] = '-';
+    }
+
+    String result(buffer);
+    delete[] buffer;
+    return result;
+}

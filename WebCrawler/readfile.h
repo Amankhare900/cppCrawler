@@ -7,7 +7,7 @@
 class ReadFile {
 public:
     String readFromFile(const String& filename);
-    // void writeToFile(const std::string& filename, const std::string& data);
+    void writeToFile(const String& filename, const String& data);
 };
 
 #endif // READFILE_H
